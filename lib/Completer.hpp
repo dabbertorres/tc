@@ -34,7 +34,7 @@ namespace tc
 			// forward declaration for the using statement below
 			struct Node;
 
-			// Radix Tree... Kind of. That would probably be a good optimization though.
+			// Radix Tree... Kind of. A "standard" implementation of one might be a good optimization though.
 			using Radix = std::map<char, Node>;
 
 			struct Node
@@ -42,7 +42,7 @@ namespace tc
 				Radix nodes;
 			};
 
-			// recursively traverses the data to build strings from the given Node's map, down.
+			// recursively traverses the data to build strings from the given map, down.
 			Results depthTraverse(const Radix& radix, const std::string& prefix = "") const;
 			
 			Radix data;
