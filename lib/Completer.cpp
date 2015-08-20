@@ -47,7 +47,7 @@ namespace tc
 
 				// if we're at the last character of the input, branch out and find all matches from here
 				if(it == lastIt)
-					vectorAppend(ret, depthTraverse(*top, input));
+					ret = depthTraverse(*top, input);
 			}
 			else
 			{
