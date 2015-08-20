@@ -1,27 +1,56 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 
-#include "Completer.hpp"
+#include <chrono>
+
+#include "../lib/Completer.hpp"
+
+std::vector<std::string> readFile(const std::string& file);
 
 int main()
 {
 	tc::Completer complete;
 
-	complete.add("hello");
-	complete.add("helli");
-	complete.add("helloworld");
-	complete.add("hi");
-	complete.add("hellb");
-	complete.add("helz");
-	complete.add("greg");
+	auto contents = readFile("text.txt");
 
-	auto ret = complete.complete("hel");
+	complete.add(contents);
 
-	for(auto& s : ret)
-		std::cout << s << '\n';
-	std::cout << '\n';
+	std::string input = "\0";
+	while(true)
+	{
+		std::cout << ": ";
+		std::cin >> input;
 
-	std::cin.ignore();
+		if(input == "!x")
+			break;
+
+		auto start = std::chrono::high_resolution_clock::now().time_since_epoch();
+		auto ret = complete.complete(input);
+		auto end = std::chrono::high_resolution_clock::now().time_since_epoch();
+
+		for(auto& s : ret)
+			std::cout << s << '\n';
+		std::cout << "time to complete: " << (end - start).count() / 1000000.0 << "ms\n\n";
+	}
 
 	return 0;
+}
+
+std::vector<std::string> readFile(const std::string& file)
+{
+	std::ifstream fin;
+
+	fin.open("text.txt");
+
+	if(!fin)
+		return {};
+
+	std::vector<std::string> contents;
+
+	std::string in;
+	while(fin >> in)
+		contents.push_back(in);
+
+	return contents;
 }
